@@ -44,6 +44,10 @@ class RegistrationView(generics.GenericAPIView):
 
 
 class UpdateRegisterView(generics.GenericAPIView):
+    @swagger_auto_schema(
+        request_body=RegisterUpdateSerializer,  # Определите ваш сериализатор
+        responses={200: 'User updated successfully', 400: 'Bad Request'}
+    )
     def put(self, request):
         user = request.user  # Retrieve the authenticated user
 
@@ -59,6 +63,10 @@ class UpdateRegisterView(generics.GenericAPIView):
 
 
 class UpdatePasswordView(generics.GenericAPIView):
+    @swagger_auto_schema(
+        request_body=PasswordUpdateSerializer,  # Определите ваш сериализатор
+        responses={200: 'Password updated successfully', 400: 'Bad Request'}
+    )
     def put(self, request):
         user = request.user  # Retrieve the authenticated user
 
