@@ -1,7 +1,7 @@
 from rest_framework import generics, status, views, permissions
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from django.views.generic.base import RedirectView
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
@@ -44,6 +44,8 @@ class RegistrationView(generics.GenericAPIView):
 
 
 class UpdateRegisterView(generics.GenericAPIView):
+    serializer_class = RegisterUpdateSerializer
+
     @swagger_auto_schema(
         request_body=RegisterUpdateSerializer,  # Определите ваш сериализатор
         responses={200: 'User updated successfully', 400: 'Bad Request'}
@@ -63,6 +65,8 @@ class UpdateRegisterView(generics.GenericAPIView):
 
 
 class UpdatePasswordView(generics.GenericAPIView):
+    serializer_class = PasswordUpdateSerializer
+
     @swagger_auto_schema(
         request_body=PasswordUpdateSerializer,  # Определите ваш сериализатор
         responses={200: 'Password updated successfully', 400: 'Bad Request'}
@@ -81,7 +85,7 @@ class UpdatePasswordView(generics.GenericAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class VerifyEmail(views.APIView):
+class VerifyEmail(RedirectView):
     serializer_class = EmailVerificationSerializer
 
     token_param_config = openapi.Parameter(
@@ -97,7 +101,10 @@ class VerifyEmail(views.APIView):
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
-            return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
+
+            redirect_view = UpdateRegisterView.as_view()
+            return redirect_view(request)
+            # return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError as identifier:

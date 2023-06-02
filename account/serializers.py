@@ -34,16 +34,23 @@ def validate_password_characters(value):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    message = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['email', 'message']
+
+    def get_message(self, obj):
+        return (
+            "Verification message has been sent to your email, please verify your email"
+        )
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
 
 
 class RegisterUpdateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'date_born']
