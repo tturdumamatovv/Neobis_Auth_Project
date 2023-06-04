@@ -171,3 +171,6 @@ REST_AUTH_SERIALIZERS = {
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = ["https://neobis-front-auth.vercel.app/passwordset"]
+CSRF_COOKIE_SECURE = False
