@@ -169,8 +169,12 @@ REST_AUTH_SERIALIZERS = {
         'account.serializers.PasswordResetSerializer',
 }
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    'https://neobis-front-auth.vercel.app',  # Замените на домен сервера, с которого разрешено отправлять запросы
+]
 
 CSRF_TRUSTED_ORIGINS = ["https://neobis-front-auth.vercel.app/passwordset"]
 CSRF_COOKIE_SECURE = False
