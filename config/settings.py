@@ -176,5 +176,5 @@ CORS_ALLOWED_ORIGINS = [
     'https://neobis-front-auth.vercel.app',  # Замените на домен сервера, с которого разрешено отправлять запросы
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://neobis-front-auth.vercel.app/passwordset"]
+CSRF_TRUSTED_ORIGINS = ["https://neobis-front-auth.vercel.app"]
 CSRF_COOKIE_SECURE = False
