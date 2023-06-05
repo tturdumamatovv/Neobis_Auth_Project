@@ -176,11 +176,32 @@ REST_AUTH_SERIALIZERS = {
 #     'https://neobis-front-auth.vercel.app',  # Замените на домен сервера, с которого разрешено отправлять запросы
 # ]
 
-CORS_ORIGIN_WHITELIST = [
-    'https://neobis-front-auth.vercel.app',  # Замените на домены, которым нужен доступ
+# CORS_ORIGIN_WHITELIST = [
+#     'https://neobis-front-auth.vercel.app',  # Замените на домены, которым нужен доступ
+# ]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://neobis-front-auth.vercel.app',
 ]
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
 # CSRF_TRUSTED_ORIGINS = ["https://neobis-front-auth.vercel.app"]
 # CSRF_COOKIE_SECURE = False
