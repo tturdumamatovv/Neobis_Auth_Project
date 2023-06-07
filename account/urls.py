@@ -1,14 +1,13 @@
 from django.urls import path, re_path
 
 from .views import RegistrationView, VerifyEmail, LoginAPIView, PasswordTokenCheckAPI, RequestPasswordResetEmail, \
-    SetNewPasswordAPIView, LogoutAPIView, UpdateRegisterView, UpdatePasswordView, MobileRegistrationView
+    SetNewPasswordAPIView, LogoutAPIView, UpdateRegisterView, UpdatePasswordView
 
 from rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('register/', RegistrationView.as_view(), name='register'),
-    path('register-for-mobile/', MobileRegistrationView.as_view(), name='register-for-mobile'),
     path('register-update/', UpdateRegisterView.as_view(), name='register-update'),
     path('password-update/', UpdatePasswordView.as_view(), name='password-update'),
     path('login/', LoginAPIView.as_view(), name='login'),
