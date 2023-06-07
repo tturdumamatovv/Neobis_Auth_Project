@@ -40,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, blank=True, null=True)
     username = models.CharField(max_length=255, unique=True, db_index=True, null=True, blank=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    phone = models.CharField(max_length=255, blank=True, null=True, default='+996000000000')
+    phone = models.CharField(max_length=255, blank=True, null=True, unique=True)
     date_born = models.DateField(default=now())
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
