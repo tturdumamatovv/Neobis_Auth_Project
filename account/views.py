@@ -1,14 +1,14 @@
 from rest_framework import generics, status, views, permissions
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.views.generic.base import RedirectView
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
+from django.views.generic.base import RedirectView
+from django.http import HttpResponseRedirect
 
 
 import jwt
@@ -123,9 +123,10 @@ class VerifyEmail(RedirectView):
                 user.is_verified = True
                 user.save()
 
-            redirect_view = UpdateRegisterView.as_view()
-            return redirect_view(request)
-            # return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
+            token_front = RefreshToken.for_user(user).access_token
+
+            return HttpResponseRedirect('https://neobis-auth.herokuapp.com/registrationform' + f'/?token={token_front}')
+
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError as identifier:

@@ -171,12 +171,3 @@ REST_AUTH_SERIALIZERS = {
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
-
-CORS_ALLOWED_ORIGINS = [
-    'https://neobis-front-auth.vercel.app',  # Замените на домен сервера, с которого разрешено отправлять запросы
-]
-
-# CORS_ORIGIN_ALLOW_ALL = True
-
-CSRF_TRUSTED_ORIGINS = ["https://neobis-front-auth.vercel.app"]
-CSRF_COOKIE_SECURE = False
