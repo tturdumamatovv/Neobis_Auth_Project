@@ -152,7 +152,7 @@ class VerifyEmailMobile(RedirectView):
 
             token_mobile = RefreshToken.for_user(user).access_token
 
-            return HttpResponseRedirect('authapp://additionalInfo?token=dksla;dklsa;jwpqrjqpwojr' + f'/?token={token_mobile}')
+            return HttpResponseRedirect('authapp://additionalInfo' + f'/?token={token_mobile}')
 
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
