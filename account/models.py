@@ -13,13 +13,14 @@ from datetime import datetime
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=str(123)):
+    def create_user(self, email, password=str(123), phone=str(+996000000000)):
 
         if email is None:
             raise TypeError('Users should have a Email')
 
         user = self.model(email=self.normalize_email(email))
         user.set_password(password)
+        user.phone = phone
         user.save()
         return user
 
