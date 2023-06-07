@@ -13,14 +13,13 @@ from datetime import datetime
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=str(123), phone=str(+996000000000)):
+    def create_user(self, email, password=str(123)):
 
         if email is None:
             raise TypeError('Users should have a Email')
 
         user = self.model(email=self.normalize_email(email))
         user.set_password(password)
-        user.phone = phone
         user.save()
         return user
 
@@ -41,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, blank=True, null=True)
     username = models.CharField(max_length=255, unique=True, db_index=True, null=True, blank=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    phone = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True, default='+996000000000')
     date_born = models.DateField(default=now())
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
