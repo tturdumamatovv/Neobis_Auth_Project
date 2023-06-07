@@ -43,6 +43,27 @@ class RegistrationView(generics.GenericAPIView):
         return Response(user_data, status=status.HTTP_201_CREATED)
 
 
+class RegistrationViewForMobile(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        user_data = serializer.data
+        user = User.objects.get(email=user_data['email'])
+        token = RefreshToken.for_user(user).access_token
+        current_site = get_current_site(request).domain
+        relativeLink = reverse('email-verify-for-mobile')
+        absurl = 'http://'+current_site+relativeLink+'?token='+str(token)
+        email_body = 'Hi '+user.email+' Use link below to verify your email \n' + absurl
+        data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'Verify your email'}
+        Util.send_email(data)
+
+        return Response(user_data, status=status.HTTP_201_CREATED)
+
+
 class UpdateRegisterView(generics.GenericAPIView):
     serializer_class = RegisterUpdateSerializer
 
