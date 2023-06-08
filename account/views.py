@@ -134,6 +134,7 @@ class VerifyEmail(RedirectView):
             return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class VerifyEmailMobile(RedirectView):
     serializer_class = EmailVerificationSerializer
 
@@ -144,17 +145,19 @@ class VerifyEmailMobile(RedirectView):
     def get(self, request):
         token = request.GET.get('token')
         try:
-            # payload = jwt.decode(token, settings.SECRET_KEY)
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms="HS256")
             user = User.objects.get(id=payload['user_id'])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
 
-            token_mobile = RefreshToken.for_user(user).access_token
+            token_mobile = str(RefreshToken.for_user(user).access_token)
 
-            redirect_url = 'authapp://additionalInfo/?token={}'.format(token_mobile)
-            return JsonResponse({'redirect_url': redirect_url})
+            response_data = {
+                'deepLink': 'authapp://additionalInfo',
+                'token': token_mobile
+            }
+            return JsonResponse(response_data)
 
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
