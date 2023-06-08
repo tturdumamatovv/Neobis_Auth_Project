@@ -9,6 +9,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.views.generic.base import RedirectView
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 
 
 import jwt
@@ -152,7 +153,8 @@ class VerifyEmailMobile(RedirectView):
 
             token_mobile = RefreshToken.for_user(user).access_token
 
-            return HttpResponseRedirect('authapp://additionalInfo' + f'/?token={token_mobile}')
+            redirect_url = 'authapp://additionalInfo/?token={}'.format(token_mobile)
+            return JsonResponse({'redirect_url': redirect_url})
 
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
