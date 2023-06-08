@@ -126,7 +126,7 @@ class VerifyEmail(RedirectView):
 
             token_front = RefreshToken.for_user(user).access_token
 
-            return HttpResponseRedirect('https://neobis-auth.herokuapp.com/registrationform' + f'/?token={token_front}')
+            return HttpResponseRedirect('https://neobis-auth.herokuapp.com/registrationform' + f'/{token_front}')
 
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
@@ -145,19 +145,16 @@ class VerifyEmailMobile(RedirectView):
     def get(self, request):
         token = request.GET.get('token')
         try:
+            # payload = jwt.decode(token, settings.SECRET_KEY)
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms="HS256")
             user = User.objects.get(id=payload['user_id'])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
 
-            token_mobile = str(RefreshToken.for_user(user).access_token)
+            token_front = RefreshToken.for_user(user).access_token
 
-            response_data = {
-                'deepLink': 'authapp://additionalInfo',
-                'token': token_mobile
-            }
-            return JsonResponse(response_data)
+            return HttpResponseRedirect('authapp://additionalInfo' + f'/?token={token_front}')
 
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
