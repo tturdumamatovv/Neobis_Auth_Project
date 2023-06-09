@@ -154,7 +154,7 @@ class VerifyEmailMobile(RedirectView):
 
             token_front = RefreshToken.for_user(user).access_token
 
-            return HttpResponseRedirect('authapp://additionalInfo' + f'/?token={token_front}')
+            return HttpResponseRedirect('https://neobis-auth.herokuapp.com/redirection' + f'/?token={token_front}')
 
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
